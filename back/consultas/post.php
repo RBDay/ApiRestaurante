@@ -48,8 +48,9 @@ if(!method_exists ($objToPost,$action)){
 switch ($action) {
 	//-- platos ------------------------------
 	case 'changeIngredientesPlato':
-			$result = $objToPost->changeIngredientesPlato($_POST["ingredientes"]);
-			ApiTools::okInstID($id_result_insert);
+		if(!isset($_POST["ingredientes"])){ ApiTools::errorMsg("The data 'ingredientes' it's obligatory"); }
+		$id_result_insert = $objToPost->changeIngredientesPlato($_POST["ingredientes"]);
+		ApiTools::okInstID($id_result_insert);
 		break;
 	//-- (comunes) ingredientes, alergenos, platos -------------------------
 	case 'addNew':

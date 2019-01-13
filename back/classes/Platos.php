@@ -84,11 +84,21 @@ class Platos
 			ApiTools::errorMsg("The field 'id' is necessary");
 		}
 		//limpiar las referencias al $this->idPlato en la tabla platosingredientes
-
+		$deleteQuery = "DELETE FROM platosingredientes WHERE ID_plato = ".$this->idPlato;
+		$this->dbClass->doDelete($deleteQuery);
 		//insertar las nuevas referencias
-
+		$query = "INSERT INTO platosingredientes (ID_plato, ID_ingrediente) VALUES ";
+		foreach ($ingredientes as $idNow) {
+			if(ctype_digit($idNow)){
+				$query .= "(".$this->idPlato.",".$idNow."),";
+			}else{
+				ApiTools::errorMsg("The id '".$idNow."' isn't correct");
+			}
+		}
+		$query = rtrim($query,",").";";
+		$this->dbClass->doInsert($query);
 		//retornar el id del plato
-		
+		return $this->idPlato;
 	}
 }
 
