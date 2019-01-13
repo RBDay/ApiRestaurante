@@ -41,6 +41,10 @@ class Ingredientes
 	function addNew($nombreIngrediente,$alergenos){
 		//le escapo el nombre
 		$nombre = mysqli_real_escape_string($this->db,$nombreIngrediente);
+		//comprobamos que el nombre no exista
+		if($this->dbClass->checkValueNoExist($nombre,"Nombre_ingrediente","ingredientes")){
+			ApiTools::errorMsg("This name (".$nombreAlergeno.") already exists");
+		}
 		//le hago el insert
 		$query = "INSERT INTO ingredientes (Nombre_ingrediente)
 		VALUES ('".$nombre."');";

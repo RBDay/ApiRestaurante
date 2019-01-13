@@ -38,6 +38,21 @@ class DataBaseToolsApi
 	}
 
 	/**
+	* Comprobamos si el value existe en una Tabla para evitar que hayan varios nombres en la misma tabla.
+	* @see No hago el campo de ese value con un unique para que si se puedan permitir repetidos. Pero, si queremos 
+	* evitar un repetido, llamamos a esta function. (Así tenemos las 2 opciones.)
+	*/
+	public function checkValueNoExist($valueToCheck,$columnName,$tableName){
+		$queryToCheck = "SELECT ".$columnName." FROM `".$tableName."` WHERE ".$columnName." = '".$valueToCheck."';";
+		$result = mysqli_query($this->_connection,$queryToCheck);
+		if(mysqli_num_rows($result) > 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
 	* Ejecuta la query y devuelve el resultado del select
 	*/
 	public function doSelect($selectQuery) {
