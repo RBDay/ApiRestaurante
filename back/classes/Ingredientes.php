@@ -43,7 +43,7 @@ class Ingredientes
 		$nombre = mysqli_real_escape_string($this->db,$nombreIngrediente);
 		//comprobamos que el nombre no exista
 		if($this->dbClass->checkValueNoExist($nombre,"Nombre_ingrediente","ingredientes")){
-			ApiTools::errorMsg("This name (".$nombreAlergeno.") already exists");
+			ApiTools::errorMsg("This name (".$nombre.") already exists");
 		}
 		//comprobamos los id's a insertar
 		ApiTools::checkIDList($alergenos);
