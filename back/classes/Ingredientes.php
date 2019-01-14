@@ -55,6 +55,8 @@ class Ingredientes
 		foreach ($alergenos as $idNow) {
 			if(ctype_digit($idNow)){
 				$query .= "(".$this->idIngrediente.",".$idNow."),";
+			}else{
+				ApiTools::errorMsg("The id '".$idNow."' isn't correct");
 			}
 		}
 		$query = rtrim($query,",").";";
