@@ -49,6 +49,7 @@ switch ($action) {
 	//-- platos ------------------------------
 	case 'changeIngredientesPlato':
 		if(!isset($_POST["ingredientes"])){ ApiTools::errorMsg("The data 'ingredientes' it's obligatory"); }
+		if(gettype($_POST["ingredientes"]) !== "array"){ ApiTools::errorMsg("The data 'ingredientes' must be an array"); }
 		$id_result_insert = $objToPost->changeIngredientesPlato($_POST["ingredientes"]);
 		ApiTools::okInstID($id_result_insert);
 		break;
@@ -58,11 +59,13 @@ switch ($action) {
 		if($field === "platos"){
 			if(!isset($_POST["descripcion"])){ ApiTools::errorMsg("The data 'descripcion' it's obligatory"); }
 			if(!isset($_POST["ingredientes"])){ ApiTools::errorMsg("The data 'ingredientes' it's obligatory"); }
+			if(gettype($_POST["ingredientes"]) !== "array"){ ApiTools::errorMsg("The data 'ingredientes' must be an array"); }
 			$id_result_insert = $objToPost->addNew($name,$_POST["descripcion"],$_POST["ingredientes"]);
 			ApiTools::okInstID($id_result_insert);
 		}
 		if($field === "ingredientes"){
 			if(!isset($_POST["alergenos"])){ ApiTools::errorMsg("The data 'alergenos' it's obligatory"); }
+			if(gettype($_POST["alergenos"]) !== "array"){ ApiTools::errorMsg("The data 'alergenos' must be an array"); }
 			$id_result_insert = $objToPost->addNew($name,$_POST["alergenos"]);
 			ApiTools::okInstID($id_result_insert);
 		}
