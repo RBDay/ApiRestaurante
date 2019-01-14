@@ -45,6 +45,8 @@ class Ingredientes
 		if($this->dbClass->checkValueNoExist($nombre,"Nombre_ingrediente","ingredientes")){
 			ApiTools::errorMsg("This name (".$nombreAlergeno.") already exists");
 		}
+		//comprobamos los id's a insertar
+		ApiTools::checkIDList($alergenos);
 		//le hago el insert
 		$query = "INSERT INTO ingredientes (Nombre_ingrediente)
 		VALUES ('".$nombre."');";

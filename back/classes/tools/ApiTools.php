@@ -21,6 +21,17 @@ class ApiTools //extends Tools (si existiera)
 		die();
 	}
 
+	static function checkIDList($ingredientes){
+		if(count($ingredientes) === 0 || gettype($ingredientes) !== "array"){
+			ApiTools::errorMsg("The id list must be an array not empty.");
+		}
+		foreach ($ingredientes as $idNow) {
+			if(!ctype_digit($idNow)){
+				ApiTools::errorMsg("The id '".$idNow."' isn't correct");
+			}
+		}
+	}
+
 }
 
 ?>
