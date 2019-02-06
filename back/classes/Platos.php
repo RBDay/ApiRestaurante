@@ -90,6 +90,8 @@ class Platos
 		}
 		//comprobamos los id's a insertar
 		ApiTools::checkIDList($ingredientes);
+		//empezamos el transact
+		$this->dbClass->doStartTransaction();
 		//limpiar las referencias al $this->idPlato en la tabla platosingredientes
 		$deleteQuery = "DELETE FROM platosingredientes WHERE ID_plato = ".$this->idPlato;
 		//insertar las nuevas referencias
@@ -102,6 +104,8 @@ class Platos
 		$query = rtrim($query,",").";";
 		$this->dbClass->doDelete($deleteQuery);
 		$this->dbClass->doInsert($query);
+		//hacemos el CI en la DB
+		$this->dbClass->doCommit();
 		//retornar el id del plato
 		return $this->idPlato;
 	}

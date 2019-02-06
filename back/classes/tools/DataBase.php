@@ -35,7 +35,7 @@ class DataBaseToolsApi
 	* Empieza un transaction para poder revertir todos los cambios en DB a partir de este momento.
 	*/
 	public function doStartTransaction(){
-		$this->_connection->beginTransaction();
+		$this->_connection->begin_transaction();
 		//se almacena en una variable que pueda consultar
 		$this->_transactionOn = true;
 	}

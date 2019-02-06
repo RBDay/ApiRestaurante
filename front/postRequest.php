@@ -1,14 +1,14 @@
 <?php 
 //las variables "invisibles" (Post)
 $post = [
-    //'name' => 'Test 7',
-    //'descripcion' => 'Esto es una descripción interesante sobre el plato que sin duda ha sido insertado por la api.',
-    'ingredientes'   => []//'alergenos' => [2,5]// // 
+    'name' => 'Test Add with transaction',
+    'descripcion' => 'Esto es una descripción interesante sobre el plato que sin duda ha sido insertado por la api.',
+    'ingredientes'   => [3,2,5]//'alergenos' => [2,5]// // 
 ];
 //las variables que se pasan por url (Get)
-$action = "changeIngredientesPlato";//"addNew";
+$action = "addNew";//"addNew";
 $field = "platos";//"alergenos";//"platos"; //"ingredientes"
-$id = 3;//3; //null;
+$id = null;//3; //null;
 //generamos la llamada y recogemos el resultado
 if($id === null){
 	$ch = curl_init('http://localhost/testPlatos/back/consultas/post.php?action='.$action.'&field='.$field);
