@@ -65,6 +65,7 @@ class DataBaseToolsApi
 
 	/**
 	* Comprobamos si el value existe en una Tabla para evitar que hayan varios nombres en la misma tabla.
+	* @return bool <true> Existe <false> No existe
 	* @see No hago el campo de ese value con un unique para que si se puedan permitir repetidos. Pero, si queremos 
 	* evitar un repetido, llamamos a esta function. (Así tenemos las 2 opciones.)
 	*/
