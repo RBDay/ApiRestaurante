@@ -59,6 +59,8 @@ class Platos
 		$descripcion = mysqli_real_escape_string($this->db,$descripcion);
 		//comprobamos los id's a insertar
 		ApiTools::checkIDList($ingredientes);
+		//empezamos el transact
+		$this->dbClass->doStartTransaction();
 		//realizar un insert en la tabla plato con los datos $nombre y $descripcion
 		$query = "INSERT INTO platos (Nombre_plato, Descripcion)
 		VALUES ('".$nombre."', '".$descripcion."');";
@@ -73,6 +75,8 @@ class Platos
 		}
 		$query = rtrim($query,",").";";
 		$this->dbClass->doInsert($query);
+		//hacemos el CI en la DB
+		$this->dbClass->doCommit();
 		//retornamos el id del nuevo plato
 		return $this->idPlato;
 	}
@@ -86,6 +90,8 @@ class Platos
 		}
 		//comprobamos los id's a insertar
 		ApiTools::checkIDList($ingredientes);
+		//empezamos el transact
+		$this->dbClass->doStartTransaction();
 		//limpiar las referencias al $this->idPlato en la tabla platosingredientes
 		$deleteQuery = "DELETE FROM platosingredientes WHERE ID_plato = ".$this->idPlato;
 		//insertar las nuevas referencias
@@ -98,6 +104,8 @@ class Platos
 		$query = rtrim($query,",").";";
 		$this->dbClass->doDelete($deleteQuery);
 		$this->dbClass->doInsert($query);
+		//hacemos el CI en la DB
+		$this->dbClass->doCommit();
 		//retornar el id del plato
 		return $this->idPlato;
 	}

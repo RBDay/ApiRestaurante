@@ -47,6 +47,8 @@ class Ingredientes
 		}
 		//comprobamos los id's a insertar
 		ApiTools::checkIDList($alergenos);
+		//hacemos el CI en la DB
+		$this->dbClass->doCommit();
 		//le hago el insert
 		$query = "INSERT INTO ingredientes (Nombre_ingrediente)
 		VALUES ('".$nombre."');";
@@ -63,6 +65,8 @@ class Ingredientes
 		}
 		$query = rtrim($query,",").";";
 		$this->dbClass->doInsert($query);
+		//hacemos el CI en la DB
+		$this->dbClass->doCommit();
 		//retornamos el id del nuevo plato
 		return $this->idIngrediente;
 	}
