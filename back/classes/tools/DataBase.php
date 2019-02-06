@@ -10,6 +10,7 @@ class DataBaseToolsApi
 {
 	
 	private $_connection;
+	public $_transactionOn = false;
 	private static $_instance; //The single instance
 	private $_host = "localhost";
 	private $_username = "root";
@@ -30,6 +31,31 @@ class DataBaseToolsApi
 			ApiTools::errorMsg("Internal connection error. Try latter or call to support");
 		}
 	}
+	/**
+	* Empieza un transaction para poder revertir todos los cambios en DB a partir de este momento.
+	*/
+	public function doStartTransaction(){
+		$this->_connection->begin_transaction();
+		//se almacena en una variable que pueda consultar
+		$this->_transactionOn = true;
+	}
+	/**
+	* Deshacemos los cambios no guardados en las querys ejecutadas.
+	*/
+	public function doRollBack(){
+		$this->_connection->rollBack();
+		//se devuelve a false la variable para poder actuar con normalidad
+		$this->_transactionOn = false;
+	}
+	/**
+	* Realizamos el commit en la base de datos para que se fijen los datos
+	*/
+	public function doCommit(){
+		$this->_connection->commit();
+		//se devuelve a false para poder actuar con normalidad
+		$this->_transactionOn = false;
+	}
+
 	/**
 	* Consigue la conexión de la bd y la retorna
 	*/
@@ -60,12 +86,18 @@ class DataBaseToolsApi
 			$result = mysqli_query($this->_connection,$selectQuery);
 			//comprobamos que no hayan errores
 			if(mysqli_error ($this->_connection)){
+				if($this->_transactionOn === true){
+					$this->doRollBack();
+				}
 				ApiTools::errorMsg("Internal select error. Try latter or call to support");
 			}
 			//devolvemos las lineas de la busqueda
 			$result =$result->fetch_all();
 			return $result;
 		}catch(Exception $e){
+			if($this->_transactionOn === true){
+				$this->doRollBack();
+			}
 			ApiTools::errorMsg("Wrong search: ".$e->getMessage());
 		}
 	}
@@ -79,11 +111,17 @@ class DataBaseToolsApi
 			mysqli_query($this->_connection,$updateQuery);
 			//comprobamos qe no hayan habido errores
 			if(mysqli_error($this->_connection)){
+				if($this->_transactionOn === true){
+					$this->doRollBack();
+				}
 				ApiTools::errorMsg("Internal insert error. Try latter or call to support");
 			}else{
 				return true;
 			}
 		}catch(Exception $e){
+			if($this->_transactionOn === true){
+				$this->doRollBack();
+			}
 			ApiTools::errorMsg("Wrong insert: ".$e->getMessage());
 		}
 	}
@@ -97,11 +135,17 @@ class DataBaseToolsApi
 			mysqli_query($this->_connection,$deleteQuery);
 			//comprobamos qe no hayan habido errores
 			if(mysqli_error($this->_connection)){
+				if($this->_transactionOn === true){
+					$this->doRollBack();
+				}
 				ApiTools::errorMsg("Internal insert error. Try latter or call to support");
 			}else{
 				return true;
 			}
 		}catch(Exception $e){
+			if($this->_transactionOn === true){
+				$this->doRollBack();
+			}
 			ApiTools::errorMsg("Wrong insert: ".$e->getMessage());
 		}
 	}
@@ -116,12 +160,18 @@ class DataBaseToolsApi
 			mysqli_query($this->_connection,$insertQuery);
 			//comprobamos qe no hayan habido errores
 			if(mysqli_error($this->_connection)){
+				if($this->_transactionOn === true){
+					$this->doRollBack();
+				}
 				ApiTools::errorMsg("Internal insert error. Try latter or call to support");
 			}
 			//retornamos el ultimo id insertado
 			$lastIdInserted = mysqli_insert_id($this->_connection);
 			return $lastIdInserted;
 		}catch(Exception $e){
+			if($this->_transactionOn === true){
+				$this->doRollBack();
+			}
 			ApiTools::errorMsg("Wrong insert: ".$e->getMessage());
 		}
 	}
